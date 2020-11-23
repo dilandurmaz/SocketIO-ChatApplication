@@ -33,15 +33,16 @@
         socket.on('newJoin', (data) =>{
                 $('#userCount').html(`This room user count : ${data.count} <br>`);
                 $('.user').append(data.message);
-
+              
         });
         $('#send').on('click',()=>{ 
           socket.emit('sendMessage',{message:$('.message').val(),userName:$('#userName').val(),roomName : $('#roomName').val()});
           
         });
         socket.on('message',(data)=>{
-          
+        
           $('.chat').append(` ${data.message} <br>`);
+           
         });
         $('#leave').on('click',() =>{
           socket.emit('leave',{roomName : $('#roomName').val(),userName:$('#userName').val()});
@@ -54,8 +55,8 @@
           $('#userCount').html(`This room user count : ${data.count} <br>`);
           $('.user').append(data.message);
 
-        })
-     
+        });
+       
       });
 
     </script>
