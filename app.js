@@ -28,11 +28,10 @@ io.on('connection',(socket)=>{
     
     socket.on('joinRoom', (data) => {
         socket.join(data.roomName,() => {
-        
             io.to(data.roomName).emit('newJoin' ,{count : getOnlineCount(io,data),message :`  ${data.userName}  joined to ${data.roomName} room <br> `});
             socket.emit('joinedRoom');
-            const rooms = Object.keys(socket.rooms);
-            console.log(rooms);
+            // const rooms = Object.keys(socket.rooms);
+            // console.log(rooms);
            
          
         });
