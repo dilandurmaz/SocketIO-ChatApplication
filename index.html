@@ -28,6 +28,10 @@
          
           $('#start').hide();
           $('.flex-container').show();
+          socket.on('oldMessages',(deneme)=>{
+           
+            $('.chat').append(` ${deneme} <br>`);
+          });
          
         });
         socket.on('newJoin', (data) =>{

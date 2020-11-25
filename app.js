@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 server.listen(3000,()=>{
     console.log("listening to 3000 port");
 });
+
 // MONGODB CONNECT
 mongoose.connect('mongodb://localhost/chat',(err)=>{
    if(err){
@@ -25,8 +26,19 @@ const Chat = mongoose.model('Message',chatSchema);
 // SOCKETİO
 const io = socketio.listen(server);
 io.on('connection',(socket)=>{
+  
     
     socket.on('joinRoom', (data) => {
+
+         Chat.find({ room: { $eq: data.roomName }}, "msg", (error, doc) => {
+    
+            deneme = JSON.stringify(doc);
+        
+            socket.emit('oldMessages',deneme);
+            console.log(deneme); 
+        });
+       
+
         socket.join(data.roomName,() => {
             io.to(data.roomName).emit('newJoin' ,{count : getOnlineCount(io,data),message :`  ${data.userName}  joined to ${data.roomName} room <br> `});
             socket.emit('joinedRoom');
