@@ -33,8 +33,9 @@ io.on('connection',(socket)=>{
                 
                 deneme = JSON.stringify(doc);
                 s = deneme.replace(/[\[\]{}""]+/g, '');
-                d = s.replace(",","<br>");
-                socket.emit('oldMessages',d);
+                console.log(s);
+                // d = s.replace(",","<br>");
+                socket.emit('oldMessages',s);
                 
             });
        
@@ -49,7 +50,7 @@ io.on('connection',(socket)=>{
         });
     });
     socket.on('sendMessage',(data)=>{
-        const newMsg = new Chat({user:` <strong> ${data.userName}</strong>::::  ${data.message} `,room:data.roomName});
+        const newMsg = new Chat({user:` <br> <strong> ${data.userName}</strong>::::  ${data.message} <br> `,room:data.roomName});
         newMsg.save((err)=>{
             if(err) throw err ;
             io.to(data.roomName).emit('message',{message: `<strong>${data.userName}</strong> :::${data.message}  `});
