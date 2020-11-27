@@ -16,8 +16,7 @@ mongoose.connect('mongodb://localhost/chat',(err)=>{
    }
 });
 const chatSchema = mongoose.Schema({
-    name : String,
-    msg  : String,
+    user : String,
     room : String,
     created : {type : Date,default:Date.now}
 });
@@ -30,13 +29,14 @@ io.on('connection',(socket)=>{
     
     socket.on('joinRoom', (data) => {
 
-         Chat.find({ room: { $eq: data.roomName }}, "msg", (error, doc) => {
-    
-            deneme = JSON.stringify(doc);
-        
-            socket.emit('oldMessages',deneme);
-            console.log(deneme); 
-        });
+        Chat.find({ room: { $eq: data.roomName }}, { '_id': 0, 'user' :1}, (error, doc) => {
+                
+                deneme = JSON.stringify(doc);
+                s = deneme.replace(/[\[\]{}""]+/g, '');
+                d = s.replace(",","<br>");
+                socket.emit('oldMessages',d);
+                
+            });
        
 
         socket.join(data.roomName,() => {
@@ -49,10 +49,10 @@ io.on('connection',(socket)=>{
         });
     });
     socket.on('sendMessage',(data)=>{
-        const newMsg = new Chat({msg:data.message,name:data.userName,room:data.roomName});
+        const newMsg = new Chat({user:` <strong> ${data.userName}</strong>::::  ${data.message} `,room:data.roomName});
         newMsg.save((err)=>{
             if(err) throw err ;
-            io.to(data.roomName).emit('message',{message: `<strong>${data.userName}</strong> <br> ${data.message} `});
+            io.to(data.roomName).emit('message',{message: `<strong>${data.userName}</strong> :::${data.message}  `});
         });
       
           
