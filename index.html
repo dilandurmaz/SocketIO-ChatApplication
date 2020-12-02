@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <style>
+    body{
+      background-color:rgb(192, 129, 207);
+    }
     .flex-container{
       display: flex;
       flex-wrap: wrap;
@@ -24,19 +27,22 @@
             socket.emit('joinRoom', {roomName : $('#roomName').val(),userName:$('#userName').val()});
           
         });
-        socket.on('joinedRoom',()=>{
+        socket.on('joinedRoom',(data)=>{
          
           $('#start').hide();
           $('.flex-container').show();
-          socket.on('oldMessages',(deneme)=>{
-            
-            $('.chat').append(` ${deneme} `);
-          });
+          $('.user').append(data);
+        
+         
          
         });
         socket.on('newJoin', (data) =>{
                 $('#userCount').html(`This room user count : ${data.count} <br>`);
                 $('.user').append(data.message);
+                socket.on('oldMessages',(deneme)=>{
+           
+                $('.chat').append(` ${deneme} `);
+              });
               
         });
         $('#send').on('click',()=>{ 
@@ -46,7 +52,7 @@
         socket.on('message',(data)=>{
         
           $('.chat').append(` ${data.message} <br>`);
-           
+          
         });
         $('#leave').on('click',() =>{
           socket.emit('leave',{roomName : $('#roomName').val(),userName:$('#userName').val()});
@@ -66,7 +72,7 @@
     </script>
 </head>
 <body>
-  <div id="start" style="width:30%;margin:auto;border-style:groove;background-color: seagreen;">
+  <div id="start" style="width:40%;border-style:groove;margin:13% auto;">
     <label ><strong>Enter the user name:</strong> </label> <br> <br>
     <input id="userName" type="text" > <br> <br>
     <label><strong>Enter the room name:</strong> </label> <br> <br>
