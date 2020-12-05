@@ -31,7 +31,7 @@
          
           $('#start').hide();
           $('.flex-container').show();
-          $('.user').append(data);
+          // $('.user').append(data);
         
          
          
@@ -52,6 +52,7 @@
         socket.on('message',(data)=>{
         
           $('.chat').append(` ${data.message} <br>`);
+          $('.message').val("");
           
         });
         $('#leave').on('click',() =>{
@@ -64,6 +65,7 @@
         socket.on('leaved',(data)=>{
           $('#userCount').html(`This room user count : ${data.count} <br>`);
           $('.user').append(data.message);
+          
 
         });
        
