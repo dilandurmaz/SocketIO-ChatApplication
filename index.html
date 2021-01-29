@@ -23,18 +23,21 @@
 
       });
 
-      socket.on('joinedRoom', (data) => {
+      socket.on('joinedRoom', () => {
 
         $('#start').hide();
         $('.flex-container').show();
-        // $('.user').append(data);
-
-
-
+       
+        
       });
+      socket.on('joinedRoomUser',(data)=>{
+        $('.user').append(`${data}  <span class="online"></span> <br>`); 
+      })
+      
       socket.on('newJoin', (data) => {
         $('#userCount').html(`This room user count : ${data.count} <br>`);
         $('.user').append(data.message);
+        
         socket.on('oldMessages', (deneme) => {
 
           $('.chat').append(`<div style="background-color:white;height:20%;border:3px solid gray; border-radius: 25px;"> <strong> ${deneme} </div>`);
@@ -63,6 +66,7 @@
         $('.user').append(data.message);
 
 
+
       });
 
     });
@@ -74,9 +78,9 @@
   <h1>Chat Application</h1>
   <div id="start" >
     <label><strong>User Name</strong> </label> <br>  <br> 
-    <input id="userName" type="text"> <br>  <br> 
+    <input id="userName" style="border:3px solid gray;border-radius: 10px; outline-width: 0;" type="text"> <br>  <br> 
     <label><strong>Room Name</strong> </label> <br> <br> 
-    <input id="roomName" type="text"> <br>   <br> 
+    <input id="roomName"  style="border:3px solid gray;border-radius: 10px; outline-width: 0;" type="text"> <br>   <br> 
     <div class="btn-group">
       <button id="joinRoom" class="button"><strong>Join Room</strong> </button>
     </div>   
@@ -89,7 +93,7 @@
     </div> <br>
     <div class="chat" ></div> <br>
     <div class="last">
-
+   
       <input class="message"  type="text">
       <button id="send"> SEND</button>
       <button id="leave"> LEAVE ROOM</button>
@@ -98,6 +102,11 @@
   <div class="wrapper">
     <marquee behavior="alternate"><span class="text">Let's TALK!</span></marquee>
   </div>
+  
+  <!-- <span class="online"></span>
+  <span class="offline"></span> -->
+
+
 </body>
 
 </html>
