@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <style>
-    body{
-      background-color:rgb(192, 129, 207);
-    }
-    .flex-container{
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .chat{
-      justify-content:flex-end; 
-    }
-  </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-    <title>CHAT APPLICATION</title>
-    <script>
-      $(()=>{
-        const socket = io.connect('http://localhost:3000/');
-        $('.flex-container').hide();
-        $('#joinRoom').on('click',() =>{
-            socket.emit('joinRoom', {roomName : $('#roomName').val(),userName:$('#userName').val()});
-          
-        });
-        socket.on('joinedRoom',(data)=>{
-         
-          $('#start').hide();
-          $('.flex-container').show();
-          // $('.user').append(data);
-        
-         
-         
-        });
-        socket.on('newJoin', (data) =>{
-                $('#userCount').html(`This room user count : ${data.count} <br>`);
-                $('.user').append(data.message);
-                socket.on('oldMessages',(deneme)=>{
-           
-                $('.chat').append(` ${deneme} `);
-              });
-              
-        });
-        $('#send').on('click',()=>{ 
-          socket.emit('sendMessage',{message:$('.message').val(),userName:$('#userName').val(),roomName : $('#roomName').val()});
-          
-        });
-        socket.on('message',(data)=>{
-        
-          $('.chat').append(` ${data.message} <br>`);
-          $('.message').val("");
-          
-        });
-        $('#leave').on('click',() =>{
-          socket.emit('leave',{roomName : $('#roomName').val(),userName:$('#userName').val()});
-        });
-        socket.on('youleaved',()=>{
-         $('#start').show();
-         $('.flex-container').hide();
-        });
-        socket.on('leaved',(data)=>{
-          $('#userCount').html(`This room user count : ${data.count} <br>`);
-          $('.user').append(data.message);
-          
 
-        });
-       
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <title>CHAT APPLICATION</title>
+  <script>
+    $(() => {
+      const socket = io.connect('http://localhost:3000/');
+      $('.flex-container').hide();
+
+      $('#joinRoom').on('click', () => {
+        socket.emit('joinRoom', { roomName: $('#roomName').val(), userName: $('#userName').val() });
+
       });
 
-    </script>
+      socket.on('joinedRoom', (data) => {
+
+        $('#start').hide();
+        $('.flex-container').show();
+        // $('.user').append(data);
+
+
+
+      });
+      socket.on('newJoin', (data) => {
+        $('#userCount').html(`This room user count : ${data.count} <br>`);
+        $('.user').append(data.message);
+        socket.on('oldMessages', (deneme) => {
+
+          $('.chat').append(`<div style="background-color:white;height:20%;border:3px solid gray; border-radius: 25px;"> <strong> ${deneme} </div>`);
+        });
+
+      });
+      $('#send').on('click', () => {
+        socket.emit('sendMessage', { message: $('.message').val(), userName: $('#userName').val(), roomName: $('#roomName').val() });
+
+      });
+      socket.on('message', (data) => {
+
+        $('.chat').append(` ${data.message} <br>`);
+        $('.message').val("");
+
+      });
+      $('#leave').on('click', () => {
+        socket.emit('leave', { roomName: $('#roomName').val(), userName: $('#userName').val() });
+      });
+      socket.on('youleaved', () => {
+        $('#start').show();
+        $('.flex-container').hide();
+      });
+      socket.on('leaved', (data) => {
+        $('#userCount').html(`This room user count : ${data.count} <br>`);
+        $('.user').append(data.message);
+
+
+      });
+
+    });
+
+  </script>
 </head>
+
 <body>
-  <div id="start" style="width:40%;border-style:groove;margin:13% auto;">
-    <label ><strong>Enter the user name:</strong> </label> <br> <br>
-    <input id="userName" type="text" > <br> <br>
-    <label><strong>Enter the room name:</strong> </label> <br> <br>
-    <input id="roomName" type="text"> <br> <br>
-    <button id="joinRoom"><strong>JOIN ROOM</strong> </button>
-  
+  <h1>Chat Application</h1>
+  <div id="start" >
+    <label><strong>User Name</strong> </label> <br>  <br> 
+    <input id="userName" type="text"> <br>  <br> 
+    <label><strong>Room Name</strong> </label> <br> <br> 
+    <input id="roomName" type="text"> <br>   <br> 
+    <div class="btn-group">
+      <button id="joinRoom" class="button"><strong>Join Room</strong> </button>
+    </div>   
   </div>
-  <div class="flex-container" style="height:250px;">
-    <div class="user" style="width: 40%;height: 60%; border: 1px solid darkblue;">
+  
+
+  <div class="flex-container" >
+    <div class="user" >
       <label id="userCount"></label>
     </div> <br>
-    <div class="chat" style="width: 50%;height: 60%; border: 1px solid darkblue;" ></div>  <br>
-    <div >
-     
-    <input class="message" style="width: 100%;height: 40%; border: 1px solid darkblue;" type="text">
-    <button id="send"> SEND</button>
-    <button id="leave"> LEAVE ROOM</button>
+    <div class="chat" ></div> <br>
+    <div class="last">
+
+      <input class="message"  type="text">
+      <button id="send"> SEND</button>
+      <button id="leave"> LEAVE ROOM</button>
     </div>
-   
+  </div>
+  <div class="wrapper">
+    <marquee behavior="alternate"><span class="text">Let's TALK!</span></marquee>
   </div>
 </body>
+
 </html>

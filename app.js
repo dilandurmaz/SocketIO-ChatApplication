@@ -61,10 +61,10 @@ io.on('connection',(socket)=>{
         });
     });
     socket.on('sendMessage',(data)=>{
-        const newMsg = new Chat({user:` <strong> ${data.userName}</strong>:::: ${data.message} <br> `,room:data.roomName});
+        const newMsg = new Chat({user:` ${data.userName}</strong> => ${data.message} <br>  `,room:data.roomName});
         newMsg.save((err)=>{
             if(err) throw err ;
-            io.to(data.roomName).emit('message',{message: `<strong>${data.userName}</strong> :::${data.message}  `});
+            io.to(data.roomName).emit('message',{message: `<div style="background-color:white;height:20%;border:3px solid gray; border-radius: 25px;"> <strong>${data.userName}</strong> <br>${data.message} </div> `});
         });
       
           
