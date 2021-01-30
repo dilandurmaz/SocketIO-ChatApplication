@@ -32,16 +32,12 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', (data) => {
 
         Chat.find({ room: { $eq: data.roomName } }, { '_id': 0, 'user': 1, 'msg': 1 }, (error, doc) => {
-            if (Chat.find({ room: { $exists: true, $not: { $size: 0 } } })) {
-                console.log("There isn't old message yet.")
-            }
-            else {
+                
                 file = JSON.stringify(doc);
                 s = file.replace(/[\[\]{}"",]+/g, '');
                 un = s.replace(/user:/g, " ");
-                console.log(un)
-                socket.emit('oldMessages', un);
-            }
+                // console.log(un);
+                socket.emit('oldMessages', un);          
 
         });
 
@@ -61,8 +57,7 @@ io.on('connection', (socket) => {
            
 
 
-            // const rooms = Object.keys(socket.rooms);
-            // console.log(rooms);
+          
 
 
         });
