@@ -20,6 +20,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.10.15",
+    "scoop": "0.0.2",
     "socketio": "^1.0.0"
   }
 }

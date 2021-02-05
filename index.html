@@ -33,12 +33,13 @@
 
       socket.on('newJoin', (data) => {
          $('#userCount').html(`This room user count : ${data.count} <br>`);
-         if(data.count==1){
-            console.log("you are first user");
-         }
-         else{
-           $('.user').append(data.message);   
-         }
+         $('.user').append(data.message);
+        //  if(data.count==1){
+        //     console.log("you are first user");
+        //  }
+        //  else{
+        //       
+        //  }
          
         
         
