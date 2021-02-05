@@ -23,34 +23,58 @@
 
       });
 
-      socket.on('joinedRoom', () => {
+      socket.on('joinedRoom', (data) => {
         $('#start').hide();
         $('.flex-container').show();
-
+        $('#userinf').append(`${data.name}`);
+      
       });
-      socket.on('joinedRoomUser', (data) => {
-        $('.user').append(`${data}  <span class="online"></span> <br>`);
-      })
+
 
       socket.on('newJoin', (data) => {
-        $('#userCount').html(`This room user count : ${data.count} <br>`);
-        $('.user').append(data.message);
+         $('#userCount').html(`This room user count : ${data.count} <br>`);
+         if(data.count==1){
+            console.log("you are first user");
+         }
+         else{
+           $('.user').append(data.message);   
+         }
+         
+        
+        
+         
+         socket.on('joinedRoomUser', (data1) => {
+              let html = "";
+              let sentence = data1.split(" ");
+              if (sentence.length == 1) {
+                  console.log("you are first user");
 
-        socket.on('oldMessages', (deneme) => {
+              }
+              else {
+                  for (var i = 1; i <= sentence.length-1; i++) {
+              
+                  html += `${sentence[i]}   <span class="online"></span> <br>`
+                  $('.user').html(html);
+               
+                }    
+              
+              }
+            
+          })
+        
+         socket.on('oldMessages', (deneme) => {
           let str = deneme;
           let html = "";
           let sentence = str.split('<br>');
-          
-            for (var i = 0; i < sentence.length-1; i++) {
 
-              html += `<div style="background-color:white;height:20%;border:3px solid gray; border-radius: 25px;"> <strong> ${sentence[i]} </div>`;
-              $('.chat').html(html);
-            
+          for (var i = 0; i < sentence.length - 1; i++) {
+
+            html += `<div style="background-color:white;height:20%;border:3px solid gray; border-radius: 25px;"> <strong> ${sentence[i]} </div>`;
+            $('.chat').html(html);
+            console.log(sentence[i]);
+
           }
-
-
-
-        });
+         });
 
       });
       $('#send').on('click', () => {
@@ -73,9 +97,6 @@
       socket.on('leaved', (data) => {
         $('#userCount').html(`This room user count : ${data.count} <br>`);
         $('.user').append(data.message);
-
-
-
       });
 
     });
@@ -97,6 +118,9 @@
 
 
   <div class="flex-container">
+    <div id="userinf">
+      sadfdgdhdfh
+    </div>
     <div class="user">
       <label id="userCount"></label>
     </div> <br>

@@ -42,7 +42,8 @@ io.on('connection', (socket) => {
         });
 
         socket.join(data.roomName, () => {
-            socket.emit('joinedRoom');
+            socket.emit('joinedRoom',{name:`${data.userName}`});
+           
             io.to(data.roomName).emit('newJoin', { count: getOnlineCount(io, data), message: `${data.userName}  <span class="online"></span> <br> ` });
             const onl = new on({ user: `${data.userName}`, room: `${data.roomName}` });
             onl.save();
@@ -63,7 +64,7 @@ io.on('connection', (socket) => {
         });
     });
     socket.on('sendMessage', (data) => {
-        const newMsg = new Chat({ user: ` ${data.userName}</strong> => ${data.message} <br>  `, room: data.roomName });
+        const newMsg = new Chat({ user: ` ${data.userName}</strong>  ${data.message} <br>  `, room: data.roomName });
         newMsg.save((err) => {
             if (err) throw err;
             io.to(data.roomName).emit('message', { message: `<div style="background-color:white;height:20%;border:3px solid gray; border-radius: 25px;"> <strong>${data.userName}</strong> <br>${data.message} </div> ` });
