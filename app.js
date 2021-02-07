@@ -8,12 +8,13 @@ server.listen(3000, () => {
 });
 
 // MONGODB CONNECT
-mongoose.connect('mongodb://localhost/chat', (err) => {
+mongoose.connect("mongodb://localhost:27017/chat", { useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
     if (err) {
         console.log(err);
-    } else {
+    }else{
         console.log('Connected to mongodb!');
     }
+
 });
 const chatSchema = mongoose.Schema({
     user: String,
@@ -80,7 +81,15 @@ io.on('connection', (socket) => {
             }).catch(function(error){ 
                 console.log(error); // Failure 
             }); 
-            io.to(data.roomName).emit('leaved', { count: getOnlineCount(io, data), message: `  ${data.userName}  leaved to ${data.roomName} room <br> ` });
+            on.find({ room: { $eq: data.roomName } }, { 'user': 1, '_id': 0, }, (error, durum) => {
+             
+                AA = JSON.stringify(durum);
+                aa = AA.replace(/[\[\]{}"",]+/g, '');
+                un = aa.replace(/user:/g, " ");
+                io.to(data.roomName).emit('leaved', { count: getOnlineCount(io, data), message: `  ${data.userName} leaved <br> ` });
+                // io.to(data.roomName).emit('leaved', { count: getOnlineCount(io, data), msg: `  ${un} ` });         
+             });
+           
         });
     });
 
