@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const socketio = require('socket.io');
 const mongoose = require('mongoose');
-server.listen(3000,'0.0.0.0', () => {
+server.listen(3000,"161.35.56.167", () => {
     console.log("listening to 3000 port");
 });
 
