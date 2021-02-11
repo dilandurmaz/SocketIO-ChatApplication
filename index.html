@@ -4,18 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
     crossorigin="anonymous"></script>
-  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-  <link rel="stylesheet" type="text/css" href="main.css">
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <link  rel="stylesheet" type="text/css" href="main.css">
   <title>CHAT APPLICATION</title>
   <script>
     $(() => {
-      const socket = io.connect('http://localhost:3000/');
+      const socket = io.connect('http://localhost:8080/');
       $('.flex-container').hide();
 
       $('#joinRoom').on('click', () => {
@@ -144,7 +145,7 @@
 
   <!-- <span class="online"></span>
   <span class="offline"></span> -->
-
+ 
 
 </body>
 

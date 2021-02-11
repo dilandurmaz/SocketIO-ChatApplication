@@ -1,36 +1,18 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const socketio = require('socket.io');
 const mongoose = require('mongoose');
-const router = express.Router();
-router.get('/', function (req, res) {
+const io = require('socket.io')(server);
 
-  res.sendFile(__dirname + '/index.html');
-  
 
+app.use(express.static(__dirname + '/'));  
+app.get('/', function(req, res,next) {  
+    res.sendFile(__dirname + '/index.html');
 });
-
-router.post('/', function (req, res) {
-  res.send('Merhaba Express');
-});
-
-app.use('/', router);
-
-app.listen(8080, function () {
+server.listen(8080, function () {
   console.log('Sunucu çalışıyor...');
 });
-// router.use(function (req,res,next) {
-//     console.log('/' + req.method);
-//     next();
-// });
-// router.get('/', function(req,res){
-//     res.sendFile(__dirname +'index.html');
-// });
-// app.use('/', router);
-// server.listen(8080, () => {
-//     console.log("listening to 8080 port");
-// });
+
 
 // MONGODB CONNECT
 mongoose.connect("mongodb://localhost:27017/chat", { useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
@@ -51,7 +33,7 @@ const chatSchema = mongoose.Schema({
 const Chat = mongoose.model('Message', chatSchema);
 const on = mongoose.model('online', chatSchema);
 // SOCKETİO
-const io = socketio.listen(server);
+
 io.on('connection', (socket) => {
 
 
@@ -123,3 +105,5 @@ const getOnlineCount = (io, data) => {
     const room = io.sockets.adapter.rooms[data.roomName];
     return room ? room.length : 0;
 };
+
+
