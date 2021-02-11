@@ -3,9 +3,34 @@ const app = express();
 const server = require('http').createServer(app);
 const socketio = require('socket.io');
 const mongoose = require('mongoose');
-server.listen(8080, () => {
-    console.log("listening to 8080 port");
+const router = express.Router();
+router.get('/', function (req, res) {
+
+  res.sendFile(__dirname + '/index.html');
+  
+
 });
+
+router.post('/', function (req, res) {
+  res.send('Merhaba Express');
+});
+
+app.use('/', router);
+
+app.listen(8080, function () {
+  console.log('Sunucu çalışıyor...');
+});
+// router.use(function (req,res,next) {
+//     console.log('/' + req.method);
+//     next();
+// });
+// router.get('/', function(req,res){
+//     res.sendFile(__dirname +'index.html');
+// });
+// app.use('/', router);
+// server.listen(8080, () => {
+//     console.log("listening to 8080 port");
+// });
 
 // MONGODB CONNECT
 mongoose.connect("mongodb://localhost:27017/chat", { useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
